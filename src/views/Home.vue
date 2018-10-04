@@ -59,14 +59,16 @@ export default {
     filteredList () {
       let list = this.oompas
       if (/\w+/g.test(this.filterText)) {
-        let wordlist = this.filterText.toLowerCase().match(/\w+/g)
-        let regex = new RegExp(wordlist.join('|'), 'g')
+        let wordlist = this.filterText.toLowerCase().split(' ')
         list = this.oompas.filter(x => {
-          return (
-            regex.test(x.profession.toLowerCase()) ||
-            regex.test(x.first_name.toLowerCase()) ||
-            regex.test(x.last_name.toLowerCase())
-          )
+          let compareArray = [
+            x.first_name.toLowerCase(),
+            x.last_name.toLowerCase(),
+            x.profession.toLowerCase()
+          ]
+          return wordlist.every(y => {
+            return compareArray.some(z => z.includes(y))
+          })
         })
       }
       return list
